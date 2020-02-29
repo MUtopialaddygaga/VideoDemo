@@ -2,7 +2,11 @@ javah配置：
 program :$JDKPath$/bin/javah
 argument :-cp . -jni -d $ModuleFileDir$/src/main/jni $FileClass$
 working directory :$ModuleFileDir$/src/main/java
+
 ndk-build配置:
 program :/home/hysyb-wujianfeng/envirometOfDeveloper/sdk/android-sdk-linux/platforms/ndk/20.1.5948944/ndk-build
 argument :
 working directory :$ModuleFileDir$/src/main/jni
+
+java类型装成jni数据类型(java.lang.String->Ljava/lang/String;)命令:
+javap -s -p xxxxx(类名)
