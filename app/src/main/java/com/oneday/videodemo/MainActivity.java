@@ -30,5 +30,12 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "last value :" + testData[9] + "sum :" + sum);
 
+        int[][] _2dArrayData = demo.create2DArray(2);
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                System.out.print(" " + _2dArrayData[i][j]);
+            }
+            System.out.println();
+        }
     }
 }

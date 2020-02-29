@@ -31,6 +31,14 @@ JNIEXPORT jstring JNICALL Java_com_oneday_videodemo_jni_JniDemo_printWord
 JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniDemo_sumArray
   (JNIEnv *, jobject, jintArray);
 
+/*
+ * Class:     com_oneday_videodemo_jni_JniDemo
+ * Method:    create2DArray
+ * Signature: (I)[[I
+ */
+JNIEXPORT jobjectArray JNICALL Java_com_oneday_videodemo_jni_JniDemo_create2DArray
+  (JNIEnv *, jobject, jint);
+
 #ifdef __cplusplus
 }
 #endif

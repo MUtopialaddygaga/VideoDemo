@@ -15,4 +15,6 @@ public class JniDemo {
     public native String printWord(String str);
 
     public native int sumArray(int[] arr);
+
+    public native int[][] create2DArray(int size);
 }
