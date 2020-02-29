@@ -28,5 +28,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "java set value, S :" + demo.getS() + ", si :" + JniDemo.si);
         demo.accessField();
         Log.d(TAG, "c set value, S :" + demo.getS() + ", si :" + JniDemo.si);
+        demo.accessMethod();
     }
 }

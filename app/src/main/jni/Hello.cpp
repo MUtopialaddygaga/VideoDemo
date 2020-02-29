@@ -160,6 +160,24 @@ JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniDemo_accessField
 
     return 1;
 }
+
+/*
+ * Class:     com_oneday_videodemo_jni_JniDemo
+ * Method:    accessMethod
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_oneday_videodemo_jni_JniDemo_accessMethod
+        (JNIEnv *env, jobject jobj)
+{
+    jclass cls = (*env).GetObjectClass(jobj);
+    jmethodID methodId = (*env).GetMethodID(cls, "callBack", "()V");
+    if(NULL == methodId)
+    {
+        return;
+    }
+
+    (*env).CallVoidMethod(jobj, methodId);
+}
 #ifdef __cplusplus
 }
 #endif

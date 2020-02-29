@@ -47,6 +47,14 @@ JNIEXPORT jobjectArray JNICALL Java_com_oneday_videodemo_jni_JniDemo_create2DArr
 JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniDemo_accessField
   (JNIEnv *, jobject);
 
+/*
+ * Class:     com_oneday_videodemo_jni_JniDemo
+ * Method:    accessMethod
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_oneday_videodemo_jni_JniDemo_accessMethod
+  (JNIEnv *, jobject);
+
 #ifdef __cplusplus
 }
 #endif
