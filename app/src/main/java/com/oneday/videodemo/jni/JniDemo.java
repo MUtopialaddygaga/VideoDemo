@@ -13,4 +13,6 @@ public class JniDemo {
     public native String sayHelloWorld();
 
     public native String printWord(String str);
+
+    public native int sumArray(int[] arr);
 }

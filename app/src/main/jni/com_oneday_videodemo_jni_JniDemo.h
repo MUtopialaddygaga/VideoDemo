@@ -23,6 +23,14 @@ JNIEXPORT jstring JNICALL Java_com_oneday_videodemo_jni_JniDemo_sayHelloWorld
 JNIEXPORT jstring JNICALL Java_com_oneday_videodemo_jni_JniDemo_printWord
   (JNIEnv *, jobject, jstring);
 
+/*
+ * Class:     com_oneday_videodemo_jni_JniDemo
+ * Method:    sumArray
+ * Signature: ([I)I
+ */
+JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniDemo_sumArray
+  (JNIEnv *, jobject, jintArray);
+
 #ifdef __cplusplus
 }
 #endif
