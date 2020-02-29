@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         demo.setS("789");
-        Log.d(TAG, "java set value, S :" + demo.getS());
+        Log.d(TAG, "java set value, S :" + demo.getS() + ", si :" + JniDemo.si);
         demo.accessField();
-        Log.d(TAG, "c set value, S :" + demo.getS());
+        Log.d(TAG, "c set value, S :" + demo.getS() + ", si :" + JniDemo.si);
     }
 }

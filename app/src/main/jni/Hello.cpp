@@ -114,6 +114,7 @@ JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniDemo_accessField
 
     jfieldID fid; /* store the field ID */
     jstring jstr;
+    jint  si;
     const char *str;
 
     /* Get a reference to obj’s class */
@@ -144,6 +145,18 @@ JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniDemo_accessField
         return 0; /* out of memory */
     }
     (*env).SetObjectField(jobj, fid, jstr);
+
+    //访问java静态变量
+    fid = (*env).GetStaticFieldID(cls, "si", "I");
+    if(NULL == fid)
+    {
+        return 0;//field not find
+    }
+
+    //access the static field
+    si = (*env).GetStaticIntField(cls, fid);
+
+    (*env).SetStaticIntField(cls, fid, 888888);
 
     return 1;
 }

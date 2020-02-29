@@ -1,9 +1,8 @@
 package com.oneday.videodemo.jni;
 
-import android.util.Log;
-
 public class JniDemo {
     private String s;
+    public static int si = 123;
 
     static
     {
