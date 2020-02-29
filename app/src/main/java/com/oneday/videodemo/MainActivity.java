@@ -10,13 +10,13 @@ import com.oneday.videodemo.jni.JniDemo;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private JniDemo demo = new JniDemo();
-    private static int[] testData = new int[10];
+    //private static int[] testData = new int[10];
 
-    static {
-        for (int i = 0; i < 10; i++){
-            testData[i] = i;
-        }
-    }
+//    static {
+//        for (int i = 0; i < 10; i++){
+//            testData[i] = i;
+//        }
+//    }
 
 
 
@@ -24,18 +24,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        String test = demo.printWord("who are you ????");
-        demo.sayHelloWorld();
-        int sum = demo.sumArray(testData);
-
-        Log.d(TAG, "last value :" + testData[9] + "sum :" + sum);
-
-        int[][] _2dArrayData = demo.create2DArray(2);
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                System.out.print(" " + _2dArrayData[i][j]);
-            }
-            System.out.println();
-        }
+        demo.setS("789");
+        Log.d(TAG, "java set value, S :" + demo.getS());
+        demo.accessField();
+        Log.d(TAG, "c set value, S :" + demo.getS());
     }
 }

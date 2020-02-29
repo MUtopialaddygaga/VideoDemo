@@ -17,8 +17,7 @@ extern "C" {
 * Signature: ()Ljava/lang/String;
 */
 JNIEXPORT jstring JNICALL Java_com_oneday_videodemo_jni_JniDemo_sayHelloWorld
-        (JNIEnv *env, jobject obj)
-{
+        (JNIEnv *env, jobject obj) {
     LOGI("welcome to jni world!!!!!!!");
     return (*env).NewStringUTF("hello world!!!!!!!!!");
 }
@@ -29,15 +28,13 @@ JNIEXPORT jstring JNICALL Java_com_oneday_videodemo_jni_JniDemo_sayHelloWorld
  * Signature: (Ljava/lang/String;)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_com_oneday_videodemo_jni_JniDemo_printWord
-        (JNIEnv *env, jobject obj, jstring strValue)
-{
+        (JNIEnv *env, jobject obj, jstring strValue) {
 
     char buf[128];
     const char *str;
-    str = (*env).GetStringUTFChars(strValue,JNI_FALSE);
+    str = (*env).GetStringUTFChars(strValue, JNI_FALSE);
 
-    if(str == NULL)
-    {
+    if (str == NULL) {
         return NULL;
     }
 
@@ -57,8 +54,7 @@ JNIEXPORT jstring JNICALL Java_com_oneday_videodemo_jni_JniDemo_printWord
  * 3.Get/Release<Type>ArrayElements
  */
 JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniDemo_sumArray
-        (JNIEnv *env, jobject obj, jintArray arr)
-{
+        (JNIEnv *env, jobject obj, jintArray arr) {
     int sum = 0;
     int len = (*env).GetArrayLength(arr);
     jint buf[len];
@@ -74,36 +70,31 @@ JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniDemo_sumArray
  * Method:    create2DArray
  * Signature: (I)[[I
  */
-JNIEXPORT jobjectArray JNICALL Java_com_oneday_videodemo_jni_JniDemo_create2DArray
-        (JNIEnv *env, jobject obj, jint size)
-{
+JNIEXPORT jobjectArray JNICALL
+Java_com_oneday_videodemo_jni_JniDemo_create2DArray
+        (JNIEnv *env, jobject obj, jint size) {
     LOGI("#########学习 JNI 非原始数据类型二维数组##########");
     jobjectArray result;
     int i = 0;
     const char *mClass = "[I";
     jclass intArrCls = (*env).FindClass(mClass);
-    if(NULL == intArrCls)
-    {
+    if (NULL == intArrCls) {
         return NULL;//exception thrown
     }
 
     result = (*env).NewObjectArray(size, intArrCls, NULL);
 
-    if(NULL == result)
-    {
+    if (NULL == result) {
         return NULL;//out of memory err thrown
     }
-    for (int i = 0; i < size; ++i)
-    {
+    for (int i = 0; i < size; ++i) {
         jint tmp[256];//make sure it is large enough
         int j;
         jintArray iarr = (*env).NewIntArray(size);
-        if(NULL == iarr)
-        {
+        if (NULL == iarr) {
             return NULL;//out of memory err thrown
         }
-        for (int j = 0; j < size; ++j)
-        {
+        for (int j = 0; j < size; ++j) {
             tmp[j] = i + j;
         }
         (*env).SetIntArrayRegion(iarr, 0, size, tmp);
@@ -111,6 +102,50 @@ JNIEXPORT jobjectArray JNICALL Java_com_oneday_videodemo_jni_JniDemo_create2DArr
         (*env).DeleteLocalRef(iarr);
     }
     return result;
+}
+
+/*
+ * Class:     com_oneday_videodemo_jni_JniDemo
+ * Method:    accessField
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniDemo_accessField
+        (JNIEnv *env, jobject jobj) {
+
+    jfieldID fid; /* store the field ID */
+    jstring jstr;
+    const char *str;
+
+    /* Get a reference to obj’s class */
+    jclass cls = (*env).GetObjectClass(jobj);
+
+    //printf("In C:\n");
+
+    /* Look for the instance field s in cls */
+    fid = (*env).GetFieldID(cls, "s", "Ljava/lang/String;");
+
+    if (fid == NULL) {
+        return 0; /* failed to find the field */
+    }
+
+    /* Read the instance field s */
+    jstr = (jstring)(*env).GetObjectField(jobj, fid);
+    str = (*env).GetStringUTFChars(jstr, NULL);
+    if (str == NULL) {
+        return 0; /* out of memory */
+    }
+    //printf(" c.s = \"%s\"\n", str);
+
+    (*env).ReleaseStringUTFChars(jstr, str);
+
+    /* Create a new string and overwrite the instance field */
+    jstr = (*env).NewStringUTF("123");
+    if (jstr == NULL) {
+        return 0; /* out of memory */
+    }
+    (*env).SetObjectField(jobj, fid, jstr);
+
+    return 1;
 }
 #ifdef __cplusplus
 }
