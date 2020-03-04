@@ -13,6 +13,10 @@
         <variable
             name="mTestObservable"
             type="TestObservable" />
+
+        <variable
+            name="mainactivity"
+            type="com.oneday.videodemo.MainActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/w280dp"
             android:gravity="center"
-            android:text="@{mTestObservable.mContent + mTestObservable.mTime}"
+            android:text="@{mTestObservable.mTime + mTestObservable.mContent}"
             android:textSize="@dimen/h24sp"
             android:textColor="@color/colorAccent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -39,6 +43,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvContent"
             android:textColor="@color/colorPrimary"
+            android:onClick="@{mainactivity.dealButtonClickEventOne}"
             android:textSize="@dimen/h24sp"
             android:text="@string/main_test_button"/>
 
