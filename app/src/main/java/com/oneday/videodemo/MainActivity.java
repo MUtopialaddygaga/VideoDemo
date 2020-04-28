@@ -2,47 +2,75 @@ package com.oneday.videodemo;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 
 import com.oneday.videodemo.databinding.ActivityMainBinding;
 import com.oneday.videodemo.jni.JniDemo;
-import com.oneday.videodemo.model.TestObservable;
-import com.oneday.videodemo.tools.DateUtils;
+import com.oneday.videodemo.model.ItemModel;
+import com.oneday.videodemo.recyclerviewdemo.CommonAdapter;
+import com.oneday.videodemo.view.CustomViewActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private JniDemo demo = new JniDemo();
     private ActivityMainBinding mActivityMainBinding;
-    private TestObservable mTestBean;
-    //private static int[] testData = new int[10];
+    private CommonAdapter<ItemModel> commonAdapter;
+    private static List<ItemModel> mDatas = new ArrayList<>();
 
-//    static {
-//        for (int i = 0; i < 10; i++){
-//            testData[i] = i;
-//        }
-//    }
-
-
+    static {
+        ItemModel itemModel1 = new ItemModel();
+        itemModel1.itemLabel = "导航";
+        ItemModel itemModel2 = new ItemModel();
+        itemModel2.itemLabel = "测试";
+        ItemModel itemModel3 = new ItemModel();
+        itemModel3.itemLabel = "自定义View";
+        mDatas.add(itemModel1);
+        mDatas.add(itemModel2);
+        mDatas.add(itemModel3);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         mActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mTestBean = new TestObservable(DateUtils.getCurrentTimeStamp(), "welcome to databinding");
-        mActivityMainBinding.setMTestObservable(mTestBean);
-        mActivityMainBinding.setMainactivity(new MainActivity());
-        demo.setS("789");
-        Log.d(TAG, "java set value, S :" + demo.getS() + ", si :" + JniDemo.si);
-        demo.accessField();
-        Log.d(TAG, "c set value, S :" + demo.getS() + ", si :" + JniDemo.si);
-        demo.accessMethod();
-        //点击事件处理方法一
-//        mActivityMainBinding.btTest.setOnClickListener(this);
+        commonAdapter = new CommonAdapter<ItemModel>(mDatas, R.layout.activity_main_item, BR.itemModel);
+        commonAdapter.setOnItemClick(listener);
+        mActivityMainBinding.rvController.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mActivityMainBinding.rvController.setItemAnimator(new DefaultItemAnimator());
+        mActivityMainBinding.rvController.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
+        mActivityMainBinding.rvController.setAdapter(commonAdapter);
+
     }
+
+    CommonAdapter.ItemClickListener listener = new CommonAdapter.ItemClickListener() {
+        @Override
+        public void onItemClickListener(int item) {
+            Log.e(TAG, "#####item ：" + item);
+            switch (item){
+                case 0:
+
+                    break;
+                case 1:
+
+                    break;
+                case 2:
+                    launchActivity(CustomViewActivity.class);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onStart() {
@@ -78,4 +106,10 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, ">>>>>>>>>>>>>>dealButtonClickEvent<<<<<<<<<<<<");
     }
 
+
+    private void launchActivity(Class<?> clazz){
+        Intent mIntent = new Intent(this, clazz);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mIntent);
+    }
 }

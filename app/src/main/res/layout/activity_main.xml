@@ -9,10 +9,10 @@
 <!--            name="mTestBean"-->
 <!--            type="com.oneday.videodemo.model.TestObservable" />-->
         //写法二
-        <import type="com.oneday.videodemo.model.TestObservable"/>
+        <import type="com.oneday.videodemo.model.ItemModel"/>
         <variable
             name="mTestObservable"
-            type="TestObservable" />
+            type="com.oneday.videodemo.model.ItemModel" />
 
         <variable
             name="mainactivity"
@@ -24,29 +24,15 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <TextView
-            android:id="@+id/tvContent"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/w280dp"
-            android:gravity="center"
-            android:text="@{mTestObservable.mTime + mTestObservable.mContent}"
-            android:textSize="@dimen/h24sp"
-            android:textColor="@color/colorAccent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvController"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/h80dp"
+            android:scrollbars="horizontal"
+            android:background="@color/colorPrimary"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvContent"
-            android:textColor="@color/colorPrimary"
-            android:onClick="@{mainactivity.dealButtonClickEventOne}"
-            android:textSize="@dimen/h24sp"
-            android:text="@string/main_test_button"/>
-
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
