@@ -60,10 +60,10 @@ android {
         red{
             flavorDimensions "color"
         }
-//
-//        blue{
-//            flavorDimensions "color"
-//        }
+
+        blue{
+            flavorDimensions "color"
+        }
 
 //        free{
 //            flavorDimensions "price"
