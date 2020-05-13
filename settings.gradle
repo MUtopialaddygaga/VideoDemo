@@ -1,2 +1,2 @@
-include ':app'
+include ':onedayproject', ':mylibrary'
 rootProject.name='VideoDemo'

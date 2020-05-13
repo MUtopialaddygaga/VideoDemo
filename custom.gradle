@@ -1,0 +1,46 @@
+// 签名配置，方便调试
+//读取签名配置文件
+//Properties propertySignCfg = new Properties()
+//propertySignCfg.load(new FileInputStream(file("sign/sign.cfg")))
+//def signingCfgRk2928Cl = {
+//    keyAlias propertySignCfg['KEY_ALIAS']
+//    keyPassword propertySignCfg['KEY_PASSWORD']
+//    storeFile file(propertySignCfg['KEYSTORE_FILE_RK2928'])
+//    storePassword propertySignCfg['KEYSTORE_PASSWORD']
+//}
+
+def buildTimeForFileNameFunc() {
+    return "Build." + new Date().format("yyMMdd-HHmmss")
+}
+
+def getResStringValueFunc(resFile, name) {
+    def value = name
+    def resources = new XmlParser().parse(resFile)
+    resources.string.each {
+        if (it.attribute("name") == name) {
+            return value = it.text()
+        }
+    }
+    return value
+}
+
+ext {
+    compileSdkVersion = 29
+    buildToolsVersion = "29.0.3"
+    minSdkVersion = 15
+    versionCode = 1
+    versionName = "1.0"
+
+    //signingCfgRk2928 = signingCfgRk2928Cl
+
+    testExtendedProperies = "Hello, study ext properies"
+
+    applicationIdSuffix = ".staging"
+
+    buildTimeForFileName = this.&buildTimeForFileNameFunc
+
+    getResStringValue = this.&getResStringValueFunc
+
+    RELEASE_APK_SUFFIX_VERSION_NAME = true
+    RELEASE_APK_SUFFIX_TIMESTAMP = true
+}
