@@ -1,0 +1,4 @@
+点击事件分发机制如下:
+activity
+->dispatchTouchEvent(MotionEvent ev) -> phonewindow.superDispatchTouchEvent(ev)->DecorView=》继承自FrameLayout(ViewGroup)->所以最后会传到viewgroup.dispatchTouchEvent(MotionEvent ev)
+                                     ->true->over                              ->true->over

@@ -51,18 +51,15 @@ android {
         //可以有多个签名文件
         //xxxx1 rootProject.ext.signingCfgRk2928
         //xxxx2 rootProject.ext.signingCfgRk2928
+        common rootProject.ext.signingCfgCommon
     }
     //维度,顺序很重要
-    flavorDimensions "color", "price"
+    flavorDimensions "device"
     //该属性用来生成不同版本的程序(配置不同的签名等)
     //构建variant = 构建类型(release/debug) + product flavor(管理多个应用和依赖库)
     productFlavors{
-        red{
-            flavorDimensions "color"
-        }
-
-        blue{
-            flavorDimensions "color"
+        common{
+            flavorDimensions "device"
         }
 
 //        free{

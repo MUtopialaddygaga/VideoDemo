@@ -1,13 +1,14 @@
 // 签名配置，方便调试
 //读取签名配置文件
-//Properties propertySignCfg = new Properties()
-//propertySignCfg.load(new FileInputStream(file("sign/sign.cfg")))
-//def signingCfgRk2928Cl = {
-//    keyAlias propertySignCfg['KEY_ALIAS']
-//    keyPassword propertySignCfg['KEY_PASSWORD']
-//    storeFile file(propertySignCfg['KEYSTORE_FILE_RK2928'])
-//    storePassword propertySignCfg['KEYSTORE_PASSWORD']
-//}
+Properties propertySignCfg = new Properties()
+propertySignCfg.load(new FileInputStream(file("sign/sign.cfg")))
+
+def signingCfgCommonCl = {
+    keyAlias propertySignCfg['KEY_ALIAS_YAXON']
+    keyPassword propertySignCfg['KEY_PASSWORD_YAXON']
+    storeFile file(propertySignCfg['KEYSTORE_FILE_YAXON'])
+    storePassword propertySignCfg['KEYSTORE_PASSWORD_YAXON']
+}
 
 def buildTimeForFileNameFunc() {
     return "Build." + new Date().format("yyMMdd-HHmmss")
@@ -31,7 +32,7 @@ ext {
     versionCode = 1
     versionName = "1.0"
 
-    //signingCfgRk2928 = signingCfgRk2928Cl
+    signingCfgCommon = signingCfgCommonCl
 
     testExtendedProperies = "Hello, study ext properies"
 

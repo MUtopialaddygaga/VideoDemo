@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 
@@ -16,6 +17,8 @@ import com.oneday.videodemo.databinding.ActivityMainBinding;
 import com.oneday.videodemo.jni.JniDemo;
 import com.oneday.videodemo.model.ItemModel;
 import com.oneday.videodemo.recyclerviewdemo.CommonAdapter;
+import com.oneday.videodemo.util.LogContants;
+import com.oneday.videodemo.video.VideoActivity;
 import com.oneday.videodemo.view.CustomViewActivity;
 
 import java.util.ArrayList;
@@ -51,6 +54,15 @@ public class MainActivity extends AppCompatActivity {
         mActivityMainBinding.rvController.setItemAnimator(new DefaultItemAnimator());
         mActivityMainBinding.rvController.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
         mActivityMainBinding.rvController.setAdapter(commonAdapter);
+        mActivityMainBinding.btTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(LogContants.TAG_DISPATCH_EVENT, "MainActivity-onClick, v :" + v.toString());
+                Intent mIntent = new Intent(MainActivity.this, VideoActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(mIntent);
+            }
+        });
 
     }
 
@@ -111,5 +123,19 @@ public class MainActivity extends AppCompatActivity {
         Intent mIntent = new Intent(this, clazz);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mIntent);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Log.d(LogContants.TAG_DISPATCH_EVENT, "MainActivity-dispatchTouchEvent, ev :" + ev.toString());
+        return super.dispatchTouchEvent(ev);
+        //return true;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        Log.d(LogContants.TAG_DISPATCH_EVENT, "MainActivity-onTouchEvent, ev :" + event.toString());
+        return super.onTouchEvent(event);
+        //return true;
     }
 }
