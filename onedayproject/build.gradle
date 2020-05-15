@@ -19,6 +19,13 @@ android {
 //            abiFilters 'x86', 'x86_64', 'armeabi-v7a',
 //                    'arm64-v8a'
 //        }
+        externalNativeBuild{
+            cmake {
+                cppFlags ""
+                // 生成多个版本的so文件
+                abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+            }
+        }
     }
 
     dataBinding{
@@ -86,16 +93,18 @@ android {
 //    }
 
     externalNativeBuild{
-//        cmake{
-//            path("CMakeLists.txt")
-//        }
-        ndkBuild{
-            path 'src/main/jni/Android.mk'
+        //采用cmake编译是使用这个
+        cmake{
+            path("CMakeLists.txt")
         }
+        //通过ndk编译是开启
+//        ndkBuild{
+//            path 'src/main/jni/Android.mk'
+//        }
     }
     //配置源码路径
     sourceSets.main{
-        //jniLibs.srcDir = 'src/main/jniLibs'
+        jniLibs.srcDirs = ['/src/main/jniLibs']
     }
 
     lintOptions {
