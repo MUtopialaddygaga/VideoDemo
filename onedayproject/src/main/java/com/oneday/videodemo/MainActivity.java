@@ -15,6 +15,7 @@ import android.view.Window;
 
 import com.oneday.videodemo.databinding.ActivityMainBinding;
 import com.oneday.videodemo.jni.JniDemo;
+import com.oneday.videodemo.jni.JniInterface;
 import com.oneday.videodemo.model.ItemModel;
 import com.oneday.videodemo.recyclerviewdemo.CommonAdapter;
 import com.oneday.videodemo.util.LogContants;
@@ -26,10 +27,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private JniDemo demo = new JniDemo();
+    //private JniDemo demo = new JniDemo();
     private ActivityMainBinding mActivityMainBinding;
     private CommonAdapter<ItemModel> commonAdapter;
     private static List<ItemModel> mDatas = new ArrayList<>();
+    private JniInterface mJniInterface = new JniInterface();
 
     static {
         ItemModel itemModel1 = new ItemModel();
@@ -64,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        /***************************************************************/
+        mJniInterface.sayHelloToJniWorld();
+        Log.d("Jni-demo", "version :" + mJniInterface.getVersion());
+        mJniInterface.accessStringMethodOne("jniworld");
+        /***************************************************************/
     }
 
     CommonAdapter.ItemClickListener listener = new CommonAdapter.ItemClickListener() {
