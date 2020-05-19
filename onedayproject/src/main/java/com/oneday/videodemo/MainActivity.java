@@ -27,11 +27,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private static final String TAG_JNI = "Jni-demo";
     //private JniDemo demo = new JniDemo();
     private ActivityMainBinding mActivityMainBinding;
     private CommonAdapter<ItemModel> commonAdapter;
     private static List<ItemModel> mDatas = new ArrayList<>();
     private JniInterface mJniInterface = new JniInterface();
+    private int[] testData;
 
     static {
         ItemModel itemModel1 = new ItemModel();
@@ -67,10 +69,33 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        /***************************************************************/
+        /*******************************native测试********************************/
+        testData = new int[]{
+                1,2,3,4,5,6,7,8,9,10
+        };
         mJniInterface.sayHelloToJniWorld();
-        Log.d("Jni-demo", "version :" + mJniInterface.getVersion());
+        Log.d(TAG_JNI, "version :" + mJniInterface.getVersion());
         mJniInterface.accessStringMethodOne("jniworld");
+        Log.d(TAG_JNI, "result :" + mJniInterface.accessPrimitiveArray(testData));
+        int[][] tmpData = mJniInterface.accessObjectArray(3);
+        if (tmpData == null){
+            Log.e(TAG_JNI, "err, tmpData == null");
+            return;
+        }
+        for (int i = 0; i < tmpData.length; i++){
+            for (int j = 0; j < tmpData.length; j++){
+                Log.d(TAG_JNI, "current data :" + tmpData[i][j]);
+            }
+        }
+
+        Log.d(TAG_JNI, "############测试native调用java层field并修改其值###########################");
+        Log.d(TAG_JNI, "####修改前 :" + mJniInterface.getLocalStr());
+        mJniInterface.accessJavaFiled();
+        Log.d(TAG_JNI, "####修改后 :" + mJniInterface.getLocalStr());
+        Log.d(TAG_JNI, "访问前 :" + mJniInterface.mStaticValue);
+        Log.d(TAG_JNI, "访问静态field :" + mJniInterface.accessJavaStaticField());
+        Log.d(TAG_JNI, "访问后 :" + mJniInterface.mStaticValue);
+        Log.d(TAG_JNI, "############测试native调用java层field并修改其值###########################");
         /***************************************************************/
     }
 

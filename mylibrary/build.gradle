@@ -13,6 +13,22 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
+
+        externalNativeBuild{
+            cmake {
+                cppFlags ""
+                // 生成多个版本的so文件
+//                abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+                abiFilters 'armeabi-v7a'
+            }
+        }
+    }
+
+    externalNativeBuild{
+        //采用cmake编译是使用这个
+        cmake{
+            path("CMakeLists.txt")
+        }
     }
 
     buildTypes {
@@ -20,6 +36,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    //配置源码路径-解决“More than one file was found with OS independent path”问题
+    sourceSets.main{
+        jniLibs.srcDirs = ['/src/main/jniLibs/armeabi-v7a']
     }
 
 }

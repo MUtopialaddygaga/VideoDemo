@@ -63,6 +63,38 @@ JNIEXPORT jstring JNICALL Java_com_oneday_videodemo_jni_JniInterface_accessStrin
 JNIEXPORT jstring JNICALL Java_com_oneday_videodemo_jni_JniInterface_accessStringMethodThree
   (JNIEnv *, jobject, jstring);
 
+/*
+ * Class:     com_oneday_videodemo_jni_JniInterface
+ * Method:    accessPrimitiveArray
+ * Signature: ([I)I
+ */
+JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniInterface_accessPrimitiveArray
+  (JNIEnv *, jobject, jintArray);
+
+/*
+ * Class:     com_oneday_videodemo_jni_JniInterface
+ * Method:    accessObjectArray
+ * Signature: (I)[[I
+ */
+JNIEXPORT jobjectArray JNICALL Java_com_oneday_videodemo_jni_JniInterface_accessObjectArray
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     com_oneday_videodemo_jni_JniInterface
+ * Method:    accessJavaFiled
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_oneday_videodemo_jni_JniInterface_accessJavaFiled
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_oneday_videodemo_jni_JniInterface
+ * Method:    accessJavaStaticField
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniInterface_accessJavaStaticField
+  (JNIEnv *, jobject);
+
 #ifdef __cplusplus
 }
 #endif
