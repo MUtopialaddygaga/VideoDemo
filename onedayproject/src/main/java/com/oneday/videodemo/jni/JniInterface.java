@@ -1,16 +1,26 @@
 package com.oneday.videodemo.jni;
 
+import android.util.Log;
+
 public class JniInterface {
     private String localStr = "welcome to java world!!!!";
     public static int mStaticValue = 888888;
 
     static {
         System.loadLibrary("JniInterface");
+        initID();
     }
 
     public String getLocalStr(){
         return localStr;
     }
+
+    public void callBack() throws NullPointerException{
+        Log.d("Jni-demo", "the method was invoked by the native code");
+        throw new NullPointerException("CatchThrow.callback");
+    }
+
+    public static native void initID();
 
     public native void sayHelloToJniWorld();
 
@@ -50,4 +60,6 @@ public class JniInterface {
      * @return
      */
     public native int accessJavaStaticField();
+
+    public native void invokeCallbackBynative();
 }

@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     com_oneday_videodemo_jni_JniInterface
+ * Method:    initID
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_oneday_videodemo_jni_JniInterface_initID
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_oneday_videodemo_jni_JniInterface
  * Method:    sayHelloToJniWorld
  * Signature: ()V
  */
@@ -93,6 +101,14 @@ JNIEXPORT void JNICALL Java_com_oneday_videodemo_jni_JniInterface_accessJavaFile
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniInterface_accessJavaStaticField
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_oneday_videodemo_jni_JniInterface
+ * Method:    invokeCallbackBynative
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_oneday_videodemo_jni_JniInterface_invokeCallbackBynative
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus

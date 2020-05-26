@@ -11,7 +11,8 @@
  *    D                  doule
  *    [type              type[](例:int[]->[I)
  * Lfully-qulified-class fully-qulified-class(例:Ljava/lang/String)
- *  (arg-type)ret-type   method type
+ *  (参数类型)ret-type   method type (例：int test(int value)-->(I)I)
+ *  Ljava/lang/String;    String
  */
 
 /**
@@ -36,6 +37,8 @@
 
 #define TAG "Jni-demo"
 
+jmethodID cache_method_id_callback;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -49,6 +52,11 @@ JNIEXPORT void JNICALL Java_com_oneday_videodemo_jni_JniInterface_sayHelloToJniW
     LOGI("Hello, the Jni world!!! I`m coming!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 }
 
+JNIEXPORT void JNICALL Java_com_oneday_videodemo_jni_JniInterface_initID
+        (JNIEnv *env, jclass cls){
+    LOGD("####################initID#########################");
+    cache_method_id_callback = env->GetMethodID(cls, "callBack", "()V");
+}
 /*************************************对比有static和无static修饰的native方法参数差异***********************************************/
 /**
  * 通过以下两个方法的参数对比可知：static修饰的方法第二个参数是jclass,而未被static 修饰的第二个参数jobject
@@ -206,33 +214,45 @@ JNIEXPORT jobjectArray JNICALL Java_com_oneday_videodemo_jni_JniInterface_access
         }
         env->SetIntArrayRegion(iarr, 0, size, tmp);
         env->SetObjectArrayElement(result, i, iarr);
+        //free local reference
         env->DeleteLocalRef(iarr);
+        env->DeleteLocalRef(intArrCls);
     }
 
     return result;
 }
+/***************************************************************************************************/
+/**
+ * native层访问java实例中的field以及回调方法知识点:
+ * 1.两种方法缓存fieldID或methodID，一种是在调用native方法时缓存；
+ *   另外一种是定义一个native初始化静态方法，在加载系统库的时候调用该初始化方法，在该初始化方法中缓存相关ID；
+ * 2.可缓存fieldID或methodID，如此避免每次访问的时候重复获取fieldID的消耗
+ */
 /**
  * 访问java field的步骤:
  * 1.先获取对象的class对象；
  * 2.然后通过class对象获取field id号
  * 3.最后根据obj对象
+ * 4.可通过静态变量在缓存fieldID，以便下次调用的时候使用
  * @param env
  * @param obj
  */
 JNIEXPORT void JNICALL Java_com_oneday_videodemo_jni_JniInterface_accessJavaFiled
         (JNIEnv *env, jobject obj){
-    /* store the field ID */
-    jfieldID readFiledId;
+    /* cached field ID for s */
+    static jfieldID readFiledId = NULL;
 
     /* Get a reference to obj’s class */
     jclass readCls = env->GetObjectClass(obj);
 
-    /* Look for the instance field s in cls */
-    readFiledId = env->GetFieldID(readCls, "localStr", "Ljava/lang/String;");
-
     /* failed to find the field */
     if(NULL == readFiledId){
-        return ;
+        /* Look for the instance field s in cls */
+        readFiledId = env->GetFieldID(readCls, "localStr", "Ljava/lang/String;");
+
+        if(NULL == readFiledId){
+            return;
+        }
     }
 
     jstring javaParam;
@@ -279,6 +299,38 @@ JNIEXPORT jint JNICALL Java_com_oneday_videodemo_jni_JniInterface_accessJavaStat
     env->SetStaticIntField(mCls, staticFiledId, 66666);
     return localData;
 }
+/**
+ * Call<Type>Method--->根据回调函数的返回类型(type)
+ * @param env
+ * @param obj
+ */
+JNIEXPORT void JNICALL Java_com_oneday_videodemo_jni_JniInterface_invokeCallbackBynative
+        (JNIEnv *env, jobject obj){
+    jclass mCls = env->GetObjectClass(obj);
+
+    jmethodID jmId =  env->GetMethodID(mCls, "callBack", "()V");
+    /* method not found */
+    if(NULL == jmId){
+        return ;
+    }
+
+    env->CallVoidMethod(obj, jmId);
+
+    jthrowable mExcep = env->ExceptionOccurred();
+    if(mExcep){
+
+    }
+}
+/***************************************************************************************************/
+
+/*************************************************local and global reference***************************************************/
+/**
+ * 知识点:
+ * 1.实例以及数组对于native而言是不透明的参数，需要通过native函数取访问
+ * 2.native支持三种不同不透明参数:local references(automatically freed/no garbage collected), global references(freed by programmer/no garbage collected), and weak global references(freed by programmer/garbage collected)
+ */
+
+/****************************************************************************************************/
 #ifdef __cplusplus
 }
 #endif

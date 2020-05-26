@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,10 +19,14 @@ import com.oneday.videodemo.jni.JniDemo;
 import com.oneday.videodemo.jni.JniInterface;
 import com.oneday.videodemo.model.ItemModel;
 import com.oneday.videodemo.recyclerviewdemo.CommonAdapter;
+import com.oneday.videodemo.reflect.ResultType;
+import com.oneday.videodemo.reflect.TestClass;
 import com.oneday.videodemo.util.LogContants;
 import com.oneday.videodemo.video.VideoActivity;
 import com.oneday.videodemo.view.CustomViewActivity;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private static List<ItemModel> mDatas = new ArrayList<>();
     private JniInterface mJniInterface = new JniInterface();
     private int[] testData;
+
+    private static final SparseArray<String> dispatcherFinder = new SparseArray<String>(256);
+    private static SparseArray<String> finder;
 
     static {
         ItemModel itemModel1 = new ItemModel();
@@ -68,6 +76,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Log.d(TAG, "================================================");
+        Log.d(TAG, "dispatcherFinder :" + dispatcherFinder.hashCode());
+        finder = dispatcherFinder;
+        Log.d(TAG, "finder :" + finder.hashCode());
+        Log.d(TAG, "================================================");
+
+        studyReflect();
+
+    }
+
+    /**
+     * 学习jni
+     */
+    public void studyJni(){
 
         /*******************************native测试********************************/
         testData = new int[]{
@@ -96,7 +118,48 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG_JNI, "访问静态field :" + mJniInterface.accessJavaStaticField());
         Log.d(TAG_JNI, "访问后 :" + mJniInterface.mStaticValue);
         Log.d(TAG_JNI, "############测试native调用java层field并修改其值###########################");
+
+        mJniInterface.invokeCallbackBynative();
         /***************************************************************/
+
+    }
+
+    public void studyReflect(){
+        TestClass testClass = new TestClass();
+
+        Class cls = null;
+        //获取class对象方式一
+        //cls = testClass.getClass();
+        try {
+            //获取class对象方式二
+            cls = Class.forName(TestClass.class.getName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (cls == null){
+            return;
+        }
+
+        Class superCls = cls.getSuperclass();
+        Annotation[] mArrAn = cls.getAnnotations();
+        if (mArrAn != null && mArrAn.length > 0){
+            for (Annotation ano : mArrAn){
+                Log.d(TAG, ">>>>>>>>>>ano :" + ano.toString());
+            }
+        }
+
+        Annotation tmpAno = cls.getAnnotation(ResultType.class);
+        Log.d(TAG, ">>>>>>>>>tmpAno :" + tmpAno.toString());
+
+        Constructor[] mConstructor = cls.getConstructors();
+        if (mConstructor != null && mConstructor.length > 0){
+            for (Constructor constructor : mConstructor){
+                Log.d(TAG, "constructor :" + constructor.toString());
+            }
+        }
+
+
     }
 
     CommonAdapter.ItemClickListener listener = new CommonAdapter.ItemClickListener() {
