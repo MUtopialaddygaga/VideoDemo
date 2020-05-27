@@ -28,7 +28,10 @@ import com.oneday.videodemo.view.CustomViewActivity;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final SparseArray<String> dispatcherFinder = new SparseArray<String>(256);
     private static SparseArray<String> finder;
+    private static final Logger mLogger = Logger.getLogger("com.oneday.videodemo");
 
     static {
         ItemModel itemModel1 = new ItemModel();
@@ -84,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         studyReflect();
 
+        mLogger.setLevel(Level.FINE);
     }
 
     /**
