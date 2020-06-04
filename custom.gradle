@@ -31,6 +31,9 @@ ext {
     minSdkVersion = 15
     versionCode = 1
     versionName = "1.0"
+    daggerVersion = '2.16'
+    supportLibraryVersion = '26.1.0'
+    roomVersion='1.1.1'
 
     signingCfgCommon = signingCfgCommonCl
 

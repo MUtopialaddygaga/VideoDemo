@@ -1,0 +1,14 @@
+功能:该类负责为界面准备数据
+(1)ViewModel 绝不能引用视图、Lifecycle 或可能存储对 Activity 上下文的引用的任何类.
+(2)ViewModel 对象可以包含 LifecycleObservers，如 LiveData 对象。
+   但是，ViewModel对象绝不能观察对生命周期感知型可观察对象（如 LiveData 对象）的更改.
+(3)如果 ViewModel 需要 Application 上下文（例如，为了查找系统服务），
+   它可以扩展【AndroidViewModel】类并设置用于接收 Application的构造函数，因为 Application类会扩展Context。
+【ViewModel的生命周期】
+ViewModel 对象存在的时间范围是获取 ViewModel 时传递给 ViewModelProvider 的 Lifecycle。ViewModel 将一直留在内存中，
+直到限定其存在时间范围的 Lifecycle 永久消失：对于 Activity，是在 Activity 完成时；而对于 Fragment，是在 Fragment 分离时。
+
+【ViewModel的使用场景】
+(1)在 Fragment 之间共享数据
+(2)将加载器替换为 ViewModel
+(3)将协程与 ViewModel 一起使用

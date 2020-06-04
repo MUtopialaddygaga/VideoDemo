@@ -1,2 +1,2 @@
-include ':onedayproject', ':mylibrary'
+include ':onedayproject', ':mylibrary', ':myjetpack'
 rootProject.name='VideoDemo'

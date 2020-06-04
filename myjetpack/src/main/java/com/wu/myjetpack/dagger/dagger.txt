@@ -1,0 +1,88 @@
+  ---------------------------------------
+  |提供对象实例的方式:@module或@Inject构造函数| ==========>负责生产car（提供者）
+  ---------------------------------------
+                   |
+                   |
+                   |
+                   V
+           ----------------------
+           |Component:声明注入接口| ===================>把工厂生产出来的car送到man里面
+           ----------------------
+                   ^
+                   |
+                   |
+                   |
+          ----------------------
+          |目标类：@Inject成员属性|=======================>需要Car的目标类Man(消费)
+          ----------------------
+
+【dagger2实例化步骤】
+步骤1：首先查找@Module标注的类中是否存在提供依赖的方法。
+步骤2：若存在提供依赖的方法，查看该方法是否存在参数。
+a：若存在参数，则按从步骤1开始依次初始化每个参数；
+b：若不存在，则直接初始化该类实例，完成一次依赖注入。
+
+步骤3：若不存在提供依赖的方法，则查找@Inject标注的构造函数，看构造函数是否存在参数。
+a：若存在参数，则从步骤1开始依次初始化每一个参数
+b：若不存在，则直接初始化该类实例，完成一次依赖注入。
+
+1.@inject
+  （1）一般情况下是标注成员属性和构造函数，还支持标注方法
+  （2）被标注成员属性不能是private修饰
+  作用:
+  (1)用来标记需要依赖的变量-以此告诉Dagger2为它提供依赖
+  (2)用来标记构造函数，Dagger2通过@Inject注解可以在需要这个类实例的时候来找到这个构造函数并把相关实例构造出来，
+  以此来为被@Inject标记了的变量提供依赖
+
+2.@jnject 在以下几种场景下无法满足：
+  （1）接口没有构造函数
+  （2）第三方库的类不能被标注
+  （3）构造函数中的参数必须配置
+
+3.@Component 【只能标注接口或抽象类】，声明的注入接口的参数类型必须和目标类一致，不能是父类或子类
+  作用:
+  是依赖需求方和依赖提供方之间的桥梁.
+
+4.@Provides标注的方法来提供依赖实例，可解决2中的问题， 且该标注仅能在module中使用，只能标注方法。
+  作用:@Provides用于标注Module所标注的类中的方法，该方法在需要提供依赖时被调用，
+       从而把预先提供好的对象当做依赖给标注了@Inject的变量赋值.
+
+5.@Module标注的类，是提供依赖的对象实例的另一种方式。
+  作用:
+  @Module用于标注提供依赖的类。
+    例：@Module
+      public class CarModule {
+          @Provides
+          static Car provideCar() {
+              return new Car();
+          }
+      }
+                    ||
+      @Component(modules = CarModule.class)
+      public interface ManComponent {
+
+          void injectMan(Man man);  // 注入 man 所需要的依赖
+
+      }
+6.@bind 只作用与abstract方法，作用类似provide,作用:告诉dagger homepresenter是HomePresenterImp类实现。
+   @Module
+   public abstract class HomeModule {
+
+     @Binds
+     public abstract HomePresenter bindHomePresenter(HomePresenterImp homePresenterImp);
+   }
+
+7.@inject以及@Module @inject和@Module都是生产实例的，但是@Module的维度比@inject高，Component会先从@Module类中查找实例，如果未找到再从@inject中查找。
+
+8.@Qulifier
+  作用:
+  @Qulifier用于自定义注解，也就是说@Qulifier就如同Java提供的几种基本元注解一样用来标记注解类
+  备注:解决当调用的方法有多个返回值类型一样时，dagger无法判断调用哪个方法，通过@Qulifier自定义注解，
+  通过自定义的注解去标注提供依赖的方法和依赖需求方（也就是被@Inject标注的变量）
+
+9.@Scope
+  作用:
+  @Scope同样用于自定义注解，我能可以通过@Scope自定义的注解来限定注解作用域，实现局部的单例；
+10.@Singleton
+  作用:
+  @Singleton其实就是一个通过@Scope定义的注解，我们一般通过它来实现全局单例。但实际上它并不能提前全局单例，是否能提供全局单例还要取决于对应的Component是否为一个全局对象。
